@@ -1,6 +1,6 @@
 *_autogen/
 .DS_Store
-__version__.py
+src/twat_speech/__version__.py
 __pycache__/
 _Chutzpah*
 _deps

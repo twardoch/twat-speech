@@ -24,19 +24,44 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Fetch all history for hatch-vcs
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          python-version: "3.12"
+          enable-cache: true
+          cache-suffix: quality-checks
+
+      - name: Install development dependencies
+        run: uv pip install --system ".[dev,test]" # Install dev and test dependencies for all checks
 
       - name: Run Ruff lint
         uses: astral-sh/ruff-action@v3
         with:
-          version: "latest"
-          args: "check --output-format=github"
+          version: "latest" # Or pin to a specific ruff version
+          args: "check --output-format=github src tests"
 
-      - name: Run Ruff Format
+      - name: Run Ruff Format Check
         uses: astral-sh/ruff-action@v3
         with:
-          version: "latest"
-          args: "format --check --respect-gitignore"
+          version: "latest" # Or pin to a specific ruff version
+          args: "format --check --respect-gitignore src tests"
+
+      - name: Run Mypy
+        run: uv run mypy src tests
+
+      - name: Run pre-commit checks
+        uses: pre-commit/action@v3.0.1 # Use the latest version of the pre-commit action
+        # If pre-commit needs to install packages into an environment,
+        # it's often best to let it manage its own, or ensure the CI env has everything.
+        # The `uv pip install .[dev,test]` above should cover most needs.
 
   test:
     name: Run Tests
