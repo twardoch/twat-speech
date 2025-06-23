@@ -49,16 +49,8 @@ def process_data(
     if debug:
         logger.setLevel(logging.DEBUG)
         logger.debug("Debug mode enabled for process_data call.")
-    else:
-        # If not debug, ensure logger is at least INFO for this function's messages,
-        # but don't suppress messages if it was already DEBUG globally.
-        # This part can be tricky; often libraries don't set levels, applications do.
-        # A common library pattern is just to use logger.debug(), logger.info()
-        # and let the application control the level.
-        # For this example, we'll keep the explicit setLevel for debug=True
-        # and assume INFO is the default otherwise for messages from this function.
-        if logger.level > logging.INFO : # e.g. if it was WARNING or ERROR
-             logger.setLevel(logging.INFO)
+    elif logger.level > logging.INFO: # e.g. if it was WARNING or ERROR
+        logger.setLevel(logging.INFO)
 
 
     if not data:
