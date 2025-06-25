@@ -1,0 +1,38 @@
+- [x] **Project Initialization and Analysis:**
+    - [x] Create `PLAN.md`, `TODO.md`, and `CHANGELOG.md`.
+    - [x] Analyze `llms.txt`, `README.md`, `pyproject.toml`, `cleanup.py`, etc.
+    - [x] Define MVP core purpose (working template).
+- [x] **Address Immediate Issues & Configuration:**
+    - [x] Fix failing test `tests/test_twat_speech.py::test_version` (implicitly fixed by using `hatch` for testing).
+    - [x] Fix mypy error in `tests/test_twat_speech.py` (added `-> None`).
+    - [x] Ensure `src/twat_speech/__init__.py` exports correctly (verified).
+    - [x] Create an empty `TODO.md` file (done).
+- [x] **Streamline `cleanup.py`:**
+    - [x] Evaluate `cleanup.py` commands.
+    - [x] Decide on slimming down or removing `cleanup.py` (removed).
+    - [x] Implement changes to `cleanup.py` (removed).
+    - [x] Update `.cursor/rules/cleanup.mdc`.
+- [x] **Handle Obsolete/Redundant Files:**
+    - [x] Remove `VERSION.txt` after confirmation.
+    - [x] Remove `package.toml` after confirmation (confirmed not present).
+    - [x] Remove `REPO_CONTENT.txt` after confirmation.
+    - [x] Remove `CLEANUP.txt` after confirmation.
+- [x] **Refine Core Code (`src/twat_speech/twat_speech.py`):**
+    - [x] Define simple MVP behavior for `process_data` (reviewed, existing placeholder is fine).
+    - [x] Review logging in `process_data` (refined one message).
+    - [x] Review `main()` function (reviewed, suitable for MVP demo).
+- [x] **Review and Update Documentation and Configuration:**
+    - [x] Update `README.md` (reviewed, no changes needed).
+    - [x] Ensure `pyproject.toml` is consistent (reviewed, no changes needed).
+    - [x] Review `.gitignore` (updated to add `llms.txt`).
+    - [x] Review `.pre-commit-config.yaml` (reviewed, no changes needed).
+- [x] **Testing and Quality Assurance:**
+    - [x] Expand tests for `process_data` MVP.
+    - [x] Ensure all tests pass.
+    - [x] Ensure `hatch run lint:all` (or equivalent style and type checks) passes.
+    - [x] Run `npx repomix -o ./llms.txt .`
+- [ ] **Final Review and Submission:**
+    - [x] Review all changes.
+    - [x] Update `PLAN.md` and `TODO.md`.
+    - [ ] Update `CHANGELOG.md`.
+    - [ ] Submit changes.

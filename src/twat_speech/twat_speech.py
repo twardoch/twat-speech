@@ -49,13 +49,12 @@ def process_data(
     if debug:
         logger.setLevel(logging.DEBUG)
         logger.debug("Debug mode enabled for process_data call.")
-    elif logger.level > logging.INFO: # e.g. if it was WARNING or ERROR
+    elif logger.level > logging.INFO:  # e.g. if it was WARNING or ERROR
         logger.setLevel(logging.INFO)
-
 
     if not data:
         msg = "Input data cannot be empty"
-        if debug: # Restore level if we are about to raise an error
+        if debug:  # Restore level if we are about to raise an error
             logger.setLevel(original_level)
         raise ValueError(msg)
 
@@ -64,7 +63,9 @@ def process_data(
     # TODO: Implement actual data processing logic here.
     # The following is placeholder logic.
     if config:
-        logger.info("Processing with configuration: %s (value: %s)", config.name, config.value)
+        logger.info(
+            "Processing with configuration: %s (value: %s)", config.name, config.value
+        )
         if config.options:
             logger.debug("Configuration options: %s", config.options)
     else:
@@ -85,9 +86,12 @@ def process_data(
     }
     logger.info("Data processing finished. %d items processed.", processed_items_count)
 
-    if debug: # Restore original logger level after successful processing in debug mode
+    if debug:  # Restore original logger level after successful processing in debug mode
         logger.setLevel(original_level)
-        logger.debug("Debug mode disabled for process_data call (level restored).")
+        logger.debug(
+            "Restored logger level to %s after process_data call.",
+            logging.getLevelName(original_level),
+        )
 
     return result
 
@@ -99,7 +103,11 @@ def main() -> None:
     # Example 1: Processing with configuration and debug mode
     try:
         logger.info("--- Example 1: Processing with config and debug ---")
-        config1 = Config(name="audio_analysis", value="mfcc", options={"frames": 1024, "normalize": True})
+        config1 = Config(
+            name="audio_analysis",
+            value="mfcc",
+            options={"frames": 1024, "normalize": True},
+        )
         data1 = ["sample_audio1.wav", "sample_audio2.wav"]
         result1 = process_data(data1, config=config1, debug=True)
         logger.info("Example 1 completed. Result: %s", result1)
@@ -114,7 +122,7 @@ def main() -> None:
     try:
         logger.info("--- Example 2: Processing without config ---")
         data2 = ["text_data_item"]
-        result2 = process_data(data2) # debug=False by default
+        result2 = process_data(data2)  # debug=False by default
         logger.info("Example 2 completed. Result: %s", result2)
     except ValueError as ve:
         logger.error("Example 2: ValueError: %s", ve)
