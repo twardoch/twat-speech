@@ -1,6 +1,6 @@
 *_autogen/
 .DS_Store
-src/twat_speech/__version__.py
+__version__.py
 __pycache__/
 _Chutzpah*
 _deps
@@ -313,4 +313,4 @@ Thumbs.db
 # Project specific
 __version__.py
 _private
-llms.txt
+VERSION.txt
