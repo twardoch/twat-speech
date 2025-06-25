@@ -1,7 +1,51 @@
 ---
-description: Run `cleanup.py` script before and after changes
-globs: 
+description: Guidelines for managing changes and code quality
+globs:
 ---
-Before you do any changes or if I say "cleanup", run the `cleanup.py update` script in the main folder. Analyze the results, describe recent changes in @LOG.md and edit @TODO.md to update priorities and plan next changes. PERFORM THE CHANGES, then run the `cleanup.py status` script and react to the results.
+This project uses `hatch` for environment and task management, `git` for version control, and `pre-commit` for ensuring code quality.
 
-When you edit @TODO.md, lead in lines with empty GFM checkboxes if things aren't done (`- [ ] `) vs. filled (`- [x] `) if done. 
+**General Workflow:**
+
+1.  **Setup Environment (if first time or new terminal):**
+    ```bash
+    hatch shell
+    ```
+    This will activate the project's virtual environment, managed by `hatch` (using `uv` if available). Dependencies will be installed automatically.
+
+2.  **Check Status:**
+    *   Git status: `git status`
+    *   Run all quality checks (linting, type checking, tests):
+        ```bash
+        hatch run default:lint  # For linting and formatting checks
+        hatch run default:type-check # For mypy type checking
+        hatch run default:test   # For running pytest
+        # Or, if a combined script exists in pyproject.toml, e.g., hatch run all-checks
+        ```
+
+3.  **Making Changes:**
+    *   Edit code.
+    *   Format and fix automatically:
+        ```bash
+        hatch run lint:fmt
+        ```
+    *   Stage changes: `git add <files_to_add_or_all>`
+    *   Commit changes: `git commit -m "Your descriptive commit message"`
+        *   `pre-commit` hooks will run automatically before the commit to ensure quality. Address any issues they raise.
+
+4.  **Pushing Changes:**
+    *   `git push`
+
+**Managing `LOG.md` and `TODO.md`:**
+
+*   **`LOG.md`**: Manually update this file to describe significant changes, releases, etc., following the "Keep a Changelog" format.
+*   **`TODO.md`**: Manually update this file to manage tasks. Use GFM checkboxes:
+    *   `- [ ] Task not done`
+    *   `- [x] Task done`
+
+**Generating `llms.txt` for AI Consumption:**
+If you need to provide an updated snapshot of the codebase for AI analysis, run:
+```bash
+npx repomix -o ./llms.txt .
+```
+
+This replaces the old `cleanup.py` script, promoting the use of standard, integrated development tools.

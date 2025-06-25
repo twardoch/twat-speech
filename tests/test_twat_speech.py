@@ -8,20 +8,20 @@ from twat_speech import __version__ as pkg_version
 from twat_speech.twat_speech import Config, process_data
 
 
-def test_version():
+def test_version() -> None:
     """Verify package exposes version."""
     assert pkg_version is not None
     # A more robust check could be to ensure it matches a pattern e.g., SemVer
     assert isinstance(pkg_version, str)
 
 
-def test_process_data_empty_input_raises_value_error():
+def test_process_data_empty_input_raises_value_error() -> None:
     """Test process_data raises ValueError for empty data."""
     with pytest.raises(ValueError, match="Input data cannot be empty"):
         process_data([])
 
 
-def test_process_data_with_valid_data_no_config():
+def test_process_data_with_valid_data_no_config() -> None:
     """Test process_data with valid data and no config."""
     # Current implementation of process_data is a placeholder.
     # This test will need to be updated when actual logic is added.
@@ -29,22 +29,27 @@ def test_process_data_with_valid_data_no_config():
     data = ["some", "data"]
     result = process_data(data)
     assert isinstance(result, dict)
-    # assert result == {"processed": data} # Example assertion if logic changes
+    assert result["status"] == "completed"
+    assert result["items_received"] == len(data)
+    assert result["items_processed"] == len(data)
+    assert result["config_name"] is None
 
 
-def test_process_data_with_valid_data_and_config():
+def test_process_data_with_valid_data_and_config() -> None:
     """Test process_data with valid data and a config object."""
     data = ["item1", "item2"]
     config = Config(name="test_config", value=123, options={"opt1": True})
     result = process_data(data, config=config)
     assert isinstance(result, dict)
-    # Example: Assertions based on how config might influence processing
-    # This depends on the actual implementation of process_data
-    # if "config_name" in result:
-    #    assert result["config_name"] == config.name
+    assert result["status"] == "completed"
+    assert result["items_received"] == len(data)
+    assert result["items_processed"] == len(data)
+    assert result["config_name"] == config.name
 
 
-def test_process_data_debug_mode_logs_debug_message(caplog):
+def test_process_data_debug_mode_logs_debug_message(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     """Test process_data enables debug logging when debug=True."""
     data = ["debug_test"]
     # caplog is a pytest fixture to capture log output
@@ -60,11 +65,11 @@ def test_process_data_debug_mode_logs_debug_message(caplog):
         # A more robust way would be to check the logger's level directly if possible or
         # ensure the handler's level is reset.
         # However, the current implementation of process_data re-sets level on each call.
-        process_data(data, debug=False) # Or just process_data(data)
+        process_data(data, debug=False)  # Or just process_data(data)
         assert "Debug mode enabled" not in caplog.text
 
 
-def test_config_dataclass():
+def test_config_dataclass() -> None:
     """Test the Config dataclass instantiation and attributes."""
     name = "test_name"
     value = 42.0
@@ -78,6 +83,7 @@ def test_config_dataclass():
     assert config_no_options.name == "no_opts"
     assert config_no_options.value == "a_string"
     assert config_no_options.options is None
+
 
 # TODO: Add more tests as the functionality of process_data evolves.
 # For example:
