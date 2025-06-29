@@ -1,60 +1,102 @@
 # twat-speech
 
-**twat-speech** is a Python library, part of the `twat` ecosystem, designed for processing speech-related data. Its primary goal is to provide a flexible and configurable way to handle various speech processing tasks. This project serves as a template and a functional module for developers working with speech data within Python environments, emphasizing modern tooling and best practices.
+**`twat-speech`** is a Python library, part of the `twat` ecosystem, designed to provide a solid foundation for speech processing tasks. It serves as both a functional module and an extensible template for developers looking to build, test, and maintain speech-related applications using modern Python tools and best practices.
 
 ## Rationale
 
 The `twat-speech` library was created to offer a standardized, extensible foundation for speech data manipulation and analysis. Many projects require common preprocessing, feature extraction, or transformation steps for speech signals. This library aims to encapsulate such functionalities in a reusable manner, integrated with modern Python development tools like Hatch, Ruff, Mypy, and `uv` for a streamlined development experience. It also serves as an example of how to structure a Python library with comprehensive QA, CI/CD, and clear contribution guidelines.
 
-## Features
+## Features Overview
 
-- Modern Python packaging with PEP 621 compliance using [Hatch](https://hatch.pypa.io/).
-- Accelerated development workflows with [uv](https://github.com/astral-sh/uv) (used by Hatch automatically if available).
-- Code formatting and linting with [Ruff](https://github.com/astral-sh/ruff).
-- Static type checking with [Mypy](https://mypy-lang.org/).
-- Versioning based on Git tags using [hatch-vcs](https://github.com/ofek/hatch-vcs).
-- Comprehensive test suite using [pytest](https://pytest.org/).
-- Automated CI/CD pipelines using GitHub Actions for testing, building, and releasing.
-- Pre-commit hooks for maintaining code quality.
+*   **Modern Python Development:** Built with PEP 621 compliance using [Hatch](https://hatch.pypa.io/).
+*   **Accelerated Workflows:** Supports [uv](https://github.com/astral-sh/uv) for fast environment and dependency management (used by Hatch automatically if available).
+*   **High Code Quality:** Enforced through [Ruff](https://github.com/astral-sh/ruff) for linting and formatting, and [Mypy](https://mypy-lang.org/) for static type checking.
+*   **Automated Versioning:** Git tag-based versioning powered by [hatch-vcs](https://github.com/ofek/hatch-vcs).
+*   **Robust Testing:** Comprehensive test suite using [pytest](https://pytest.org/).
+*   **CI/CD:** Automated testing, building, and releasing via GitHub Actions.
+*   **Pre-commit Hooks:** For maintaining code standards before commits.
+*   **`twat` Ecosystem Plugin:** Designed to integrate as a plugin.
 
-## Installation
+---
 
-To install `twat-speech` from PyPI:
+## Part 1: General Information
+
+This part of the documentation is for a wider audience, including those who may want to use `twat-speech` or understand its general purpose.
+
+### What is `twat-speech`?
+
+`twat-speech` aims to simplify the development of applications that handle speech data. While its core processing logic is designed to be extended, it provides a structured environment for common tasks such as:
+
+*   Preprocessing audio data (e.g., normalization, resampling – *future capability*)
+*   Extracting acoustic features (e.g., MFCCs, spectrograms – *future capability*)
+*   Interfacing with speech recognition models or services (*future capability*)
+*   Managing configurations for different speech processing pipelines.
+
+The library is built with a focus on robustness, configurability, and a clean development experience.
+
+### Who is it for?
+
+`twat-speech` is for:
+
+*   **Python Developers:** Anyone building applications that involve audio or speech data.
+*   **Researchers:** Those who need a reliable framework for experimenting with speech processing algorithms.
+*   **Hobbyists:** Individuals exploring speech technology and looking for a well-structured starting point.
+*   **Users of the `twat` ecosystem:** If you're already using other `twat` tools, `twat-speech` integrates naturally as a plugin.
+
+### Why is it useful?
+
+*   **Modern Tooling:** Leverages Hatch, Ruff, Mypy, and pytest, ensuring code quality and maintainability.
+*   **Extensible by Design:** Its core functions are meant to be expanded or replaced by more specific speech processing logic.
+*   **Best Practices Template:** Serves as an excellent example of setting up a Python library with comprehensive QA, CI/CD, and clear contribution guidelines.
+*   **Accelerated Development:** Helps you get started quickly on speech-related projects without boilerplate setup.
+*   **`twat` Ecosystem Integration:** Designed to work as a plugin within the broader `twat` family of tools.
+
+### Installation
+
+You can install `twat-speech` from PyPI using `pip` or `uv`:
 
 ```bash
+# Using pip
 pip install twat-speech
-# Or using uv
+
+# Or using uv (recommended for faster performance)
 uv pip install twat-speech
 ```
 
-## Usage
+### Usage
+
+#### Programmatic Usage
+
+The primary way to use `twat-speech` is by importing it into your Python projects. The library centers around a `process_data` function and a `Config` class for managing settings.
 
 ```python
 import twat_speech
 from twat_speech import Config, process_data
 
-# Example usage:
-# The core function `process_data` is currently a placeholder.
-# The following example demonstrates its expected interface.
-
 # Initialize configuration (optional)
-config = Config(name="my_settings", value="alpha", options={"mode": "fast", "threshold": 0.5})
+# This allows you to define specific parameters for your speech processing tasks.
+config = Config(
+    name="my_custom_settings",
+    value="alpha_params",
+    options={"mode": "detailed_analysis", "threshold": 0.75}
+)
 
-# Sample data (e.g., a list of audio file paths, text transcriptions, or feature vectors)
-# The exact nature of this data will depend on the implemented processing logic.
-data_to_process = ["path/to/audio1.wav", "another_audio_sample.mp3", "text_input_example"]
+# Sample data: This would typically be a list of audio file paths,
+# raw audio data, or other speech-related inputs.
+# The exact nature depends on the implemented processing logic.
+data_to_process = ["path/to/audio1.wav", "another_audio_sample.mp3"]
 
 # Process data
 try:
-    # The `process_data` function will contain the core logic of this library.
-    # Currently, it returns an empty dictionary for any valid non-empty input.
-    # When implemented, it will perform speech-related tasks based on the input data and config.
-    print(f"Attempting to process: {data_to_process}")
+    # The process_data function is currently a placeholder.
+    # In a fully implemented version, it would perform speech-specific tasks
+    # based on the input data and configuration.
+    print(f"Attempting to process: {data_to_process} with config: {config.name}")
     result = process_data(data_to_process, config=config, debug=True)
     print(f"Processing successful. Result: {result}")
 
     # Example of processing without a specific configuration
-    result_no_config = process_data(["simple_item"])
+    result_no_config = process_data(["simple_item.flac"])
     print(f"Processing with no config. Result: {result_no_config}")
 
 except ValueError as e:
@@ -65,147 +107,208 @@ except Exception as e:
     print(f"An unexpected error occurred: {e}")
 
 ```
-As the `process_data` function is developed, this section will be updated with more specific examples reflecting its actual capabilities (e.g., feature extraction, format conversion, etc.).
+**Note:** The `process_data` function in the current version contains placeholder logic. As the library evolves, this function will be updated to perform actual speech processing tasks. The example above illustrates its intended interface.
 
-## Development
+#### Command-Line Demonstration
 
-This project uses [Hatch](https://hatch.pypa.io/) for development workflow management. Hatch will automatically use `uv` for faster environment and dependency management if `uv` is installed and available in your PATH. It's highly recommended to install `uv`.
+`twat-speech` includes a demonstration script within the library that you can run to see its basic operation and logging output. This is not a full-fledged CLI application but serves to illustrate the library's current capabilities.
 
-### Prerequisites
+To run the demonstration, navigate to the root directory of the project (if you have cloned the repository) or ensure `twat_speech` is in your Python path, then execute:
 
-- Python 3.10+
-- [Git](https://git-scm.com/)
-- [Hatch](https://hatch.pypa.io/latest/install/)
-- (Recommended) [uv](https://github.com/astral-sh/uv#installation)
+```bash
+# If you are in the root of the cloned repository:
+python src/twat_speech/twat_speech.py
+```
+Or, if the package is installed in your environment:
+```bash
+python -m twat_speech.twat_speech
+```
 
-### Setup Development Environment
+This will run the `main()` function in `twat_speech.py`, which executes a few examples of calling `process_data`, including one that intentionally triggers an error, showcasing the logging and error handling.
 
-1.  **Clone the repository:**
+---
+
+## Part 2: Technical Details
+
+This section provides a deeper dive into the codebase, development practices, and contribution guidelines for `twat-speech`.
+
+### How the Code Works
+
+The core logic of `twat-speech` resides primarily in `src/twat_speech/twat_speech.py`.
+
+#### `src/twat_speech/twat_speech.py`
+
+*   **`Config` Dataclass:**
+    ```python
+    from dataclasses import dataclass
+    from typing import Any
+
+    @dataclass
+    class Config:
+        name: str
+        value: str | int | float
+        options: dict[str, Any] | None = None
+    ```
+    This simple dataclass is used to pass structured configuration settings to processing functions. It holds a `name` for the configuration set, a primary `value`, and an optional dictionary `options` for more granular settings.
+
+*   **`process_data(data: list[Any], config: Config | None = None, *, debug: bool = False) -> dict[str, Any]`:**
+    This is the main function intended for data processing.
+    *   **Parameters:**
+        *   `data: list[Any]`: A list of items to be processed. The exact type of items (e.g., file paths, raw data) will depend on the specific implementation of the processing logic.
+        *   `config: Config | None = None`: An optional `Config` object to guide the processing.
+        *   `debug: bool = False`: A keyword-only argument. If `True`, it enables detailed debug logging for the function call.
+    *   **Current Logic:** As of the current version, this function contains placeholder logic. It:
+        1.  Adjusts the global logger level to `DEBUG` if `debug=True`, and restores it afterward.
+        2.  Raises a `ValueError` if the input `data` list is empty.
+        3.  Logs information about the data being processed and the configuration being used (if any).
+        4.  Simulates item processing by iterating through the input `data`.
+        5.  Returns a dictionary containing a status message, counts of items received and processed, and the name of the configuration used.
+    *   **Extensibility:** This function is designed to be the primary point for implementing actual speech processing algorithms. Future development will replace the placeholder logic with concrete operations.
+
+*   **`main() -> None`:**
+    This function serves as a runnable demonstration of the library's capabilities. When `src/twat_speech/twat_speech.py` is executed as a script, `main()` is called. It showcases:
+    1.  How to initialize `Config` objects.
+    2.  How to call `process_data` with and without a `Config`, and with `debug` mode enabled/disabled.
+    3.  An example of `process_data` handling an expected `ValueError` (when called with empty data).
+    It utilizes the `logging` module to provide informative output about its operations.
+
+*   **Logging:**
+    The module configures basic logging using `logging.basicConfig` at the module level. The `process_data` function demonstrates dynamic adjustment of logging levels based on its `debug` parameter.
+
+#### Project Structure and Tooling
+
+The `pyproject.toml` file is central to the project's structure, dependency management, and tooling.
+
+*   **Project Management with Hatch:**
+    *   [Hatch](https://hatch.pypa.io/) is used for build processes, environment management, and running scripts.
+    *   It uses `hatchling` as the build backend and `hatch-vcs` to derive the project version from Git tags (e.g., `v0.1.0`). The version is written to `src/twat_speech/__version__.py`.
+*   **Code Quality Tools:**
+    *   **[Ruff](https://github.com/astral-sh/ruff):** Used for extremely fast Python linting and code formatting. Configuration in `pyproject.toml`.
+    *   **[Mypy](https://mypy-lang.org/):** Used for static type checking. Configuration in `pyproject.toml`.
+*   **Testing with Pytest:**
+    *   [pytest](https://pytest.org/) is the testing framework. Tests are in `tests/`. Configuration in `pyproject.toml`.
+*   **Codebase Structure Overview:**
+    ```
+    .
+    ├── .github/                # GitHub Actions workflows (CI/CD)
+    ├── src/
+    │   └── twat_speech/        # Main source code for the library
+    │       ├── __init__.py
+    │       ├── __version__.py  # Version managed by hatch-vcs
+    │       └── twat_speech.py  # Core logic
+    ├── tests/                  # Test suite
+    │   └── test_twat_speech.py
+    ├── .gitignore
+    ├── .pre-commit-config.yaml # Pre-commit hook configurations
+    ├── LICENSE
+    ├── README.md               # This file
+    └── pyproject.toml          # Project metadata and build configuration (PEP 621)
+    ```
+
+### Development and Contribution
+
+We welcome contributions! Please adhere to the following guidelines.
+
+#### Development Environment Setup
+
+1.  **Prerequisites:**
+    *   Python 3.10+
+    *   [Git](https://git-scm.com/)
+    *   [Hatch](https://hatch.pypa.io/latest/install/)
+    *   (Highly Recommended) [uv](https://github.com/astral-sh/uv#installation) for significantly faster dependency management. Hatch will use `uv` automatically if available.
+
+2.  **Clone the Repository:**
     ```bash
     git clone https://github.com/twardoch/twat-speech.git
     cd twat-speech
     ```
 
-2.  **Install Hatch (if not already installed):**
+3.  **Install Hatch (if not already installed):**
     ```bash
-    pip install hatch
-    # Or using uv
-    uv pip install hatch
+    pip install hatch  # Or: uv pip install hatch
     ```
 
-3.  **Install `uv` (recommended for faster performance):**
-    Follow the installation instructions at [astral.sh/uv#installation](https://astral.sh/uv#installation).
-    For example:
+4.  **Install `uv` (Recommended):**
+    Follow instructions at [astral.sh/uv#installation](https://astral.sh/uv#installation). E.g., for macOS/Linux:
     ```bash
-    # On macOS and Linux
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    # On Windows
-    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-    ```
-    Verify installation:
-    ```bash
-    uv --version
     ```
 
-4.  **Activate the Hatch environment:**
-    Hatch will create and manage a virtual environment for the project.
+5.  **Activate Hatch Environment:**
+    This creates a virtual environment and installs project dependencies.
     ```bash
     hatch shell
     ```
-    This command automatically installs all dependencies defined in `pyproject.toml`. If `uv` is available, Hatch will use it, significantly speeding up this process.
 
-5.  **Install pre-commit hooks:**
-    This project uses pre-commit hooks to ensure code quality before committing.
+6.  **Install Pre-commit Hooks:**
+    This helps maintain code quality by running checks before each commit.
     ```bash
     pre-commit install
     ```
 
-### Common Development Tasks
+#### Common Development Tasks
 
 All commands should be run from within the activated Hatch environment (`hatch shell`).
 
--   **Run tests:**
+*   **Run Tests:**
     ```bash
-    hatch run test
+    hatch run test  # or simply: pytest
     ```
-    This executes the test suite using `pytest`.
-
--   **Run tests with coverage:**
+*   **Run Tests with Coverage:**
     ```bash
     hatch run test-cov
     ```
-    This generates a coverage report.
-
--   **Run linters and formatters:**
-    Ruff is used for both linting and formatting.
-    ```bash
-    # Check for linting issues and formatting (does not modify files)
-    hatch run lint:style
-    # Format code and fix linting issues automatically
-    hatch run lint:fmt
-    ```
-
--   **Run static type checking:**
+*   **Linting and Formatting (Ruff):**
+    *   Check for issues (no changes made): `hatch run lint:style`
+    *   Format code and fix issues: `hatch run lint:fmt`
+*   **Static Type Checking (Mypy):**
     ```bash
     hatch run lint:typing
-    # Or directly
-    # mypy src/twat_speech tests
     ```
-
--   **Build the package:**
+*   **Build the Package:**
+    Creates wheel and sdist packages in `dist/`.
     ```bash
     hatch build
     ```
-    This will create wheel and sdist packages in the `dist/` directory.
 
-### Codebase Structure
+#### Coding Standards
 
-```
-.
-├── .github/                # GitHub Actions workflows
-├── .vscode/                # VSCode settings (optional)
-├── src/
-│   └── twat_speech/        # Main source code for the library
-│       ├── __init__.py
-│       ├── __version__.py  # Version managed by hatch-vcs
-│       └── twat_speech.py  # Core logic
-├── tests/                  # Test suite
-│   └── test_twat_speech.py
-├── .gitignore
-├── .pre-commit-config.yaml # Pre-commit hook configurations
-├── LICENSE
-├── README.md               # This file
-└── pyproject.toml          # Project metadata and build configuration (PEP 621)
-```
+*   **PEP 8:** Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guidelines.
+*   **Formatting & Linting:** Code is automatically formatted and linted by Ruff. Ensure `hatch run lint:fmt` passes.
+*   **Type Hinting:** Use type hints. Ensure `hatch run lint:typing` (Mypy) passes.
+*   **Comments:** Write clear comments for complex logic.
 
-### Contribution Guidelines
+#### Testing
 
-We welcome contributions! Please follow these guidelines:
+*   Write tests for new features/fixes in `tests/`.
+*   Ensure all tests pass (`hatch run test`) and aim for high coverage.
 
-1.  **Branching:** Create a new branch for each feature or bug fix: `git checkout -b feature/your-feature-name` or `bugfix/issue-number`.
-2.  **Coding Standards:**
-    *   Follow PEP 8 guidelines.
-    *   Code is formatted and linted using Ruff. Ensure `hatch run lint:fmt` passes.
-    *   Code is type-checked using Mypy. Ensure `hatch run lint:typing` passes.
-    *   Write clear, concise, and well-commented code where necessary.
-3.  **Testing:**
-    *   Write tests for new features and bug fixes.
-    *   Ensure all tests pass (`hatch run test`).
-    *   Aim for high test coverage.
-4.  **Commit Messages:**
-    *   Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
-    *   Example: `feat: add user authentication` or `fix: resolve issue with data parsing`.
-5.  **Pull Requests (PRs):**
-    *   Submit PRs to the `main` branch.
-    *   Provide a clear description of the changes in your PR.
-    *   Ensure all CI checks pass.
-    *   Link to any relevant issues.
-6.  **Versioning and Releases:**
-    *   This project uses semantic versioning (SemVer) based on Git tags, managed by `hatch-vcs`.
-    *   Releases are automated via GitHub Actions when a new tag (e.g., `v0.1.0`) is pushed.
-    *   Maintainers will handle the tagging and release process.
+#### Commit Messages
+
+*   Follow [Conventional Commits](https://www.conventionalcommits.org/).
+    *   Examples: `feat: add whisper ASR integration`, `fix: correct RMS energy calculation`.
+
+#### Branching Strategy
+
+*   Create branches from `main`: `feature/your-feature-name` or `bugfix/issue-id`.
+
+#### Pull Requests (PRs)
+
+*   Submit PRs to the `main` branch.
+*   Provide clear descriptions and ensure CI checks pass.
+*   Link to relevant issues.
+
+#### Versioning and Releases
+
+*   Semantic Versioning (SemVer: `MAJOR.MINOR.PATCH`) via `hatch-vcs` from Git tags.
+*   Maintainers handle tagging and releases (automated via GitHub Actions).
+
+## Project Links
+
+*   **Documentation:** [https://github.com/twardoch/twat-speech#readme](https://github.com/twardoch/twat-speech#readme)
+*   **Issue Tracker:** [https://github.com/twardoch/twat-speech/issues](https://github.com/twardoch/twat-speech/issues)
+*   **Source Code:** [https://github.com/twardoch/twat-speech](https://github.com/twardoch/twat-speech)
 
 ## License
 
-MIT License
-```
+`twat-speech` is distributed under the terms of the MIT license. See the `LICENSE` file for details.
