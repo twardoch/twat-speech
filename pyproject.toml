@@ -59,6 +59,12 @@ Documentation = "https://github.com/twardoch/twat-speech#readme"
 Issues = "https://github.com/twardoch/twat-speech/issues"
 Source = "https://github.com/twardoch/twat-speech"
 
+# Entry Points
+# ------------
+# Console scripts for CLI usage
+[project.scripts]
+twat-speech = "twat_speech.twat_speech:main"
+
 # Twat Plugin Registration
 # -----------------------
 # Registers this package as a plugin for the twat ecosystem
@@ -218,6 +224,10 @@ dev = [
     "ruff>=0.9.6", # Fast Python linter
     "mypy>=1.15.0", # Static type checker
 
+]
+binary = [
+    "pyinstaller>=6.3.0", # For creating standalone executables
+    "staticx>=0.14.1", # For creating static Linux binaries
 ]
 all = [
     "twat>=1.8.1", # Main twat package

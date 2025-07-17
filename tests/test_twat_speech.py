@@ -1,18 +1,22 @@
 """Test suite for twat_speech."""
 
 import logging
+import re
+from typing import Any
 
 import pytest
 
 from twat_speech import __version__ as pkg_version
-from twat_speech.twat_speech import Config, process_data
+from twat_speech.twat_speech import Config, process_data, main
 
 
 def test_version() -> None:
     """Verify package exposes version."""
     assert pkg_version is not None
-    # A more robust check could be to ensure it matches a pattern e.g., SemVer
     assert isinstance(pkg_version, str)
+    # Test that version follows semantic versioning pattern (including hatch-vcs post-release versions)
+    semver_pattern = r"^\d+\.\d+\.\d+(?:\.post\d+)?(?:\+.+)?$"
+    assert re.match(semver_pattern, pkg_version), f"Version {pkg_version} doesn't match SemVer pattern"
 
 
 def test_process_data_empty_input_raises_value_error() -> None:
@@ -85,8 +89,105 @@ def test_config_dataclass() -> None:
     assert config_no_options.options is None
 
 
-# TODO: Add more tests as the functionality of process_data evolves.
-# For example:
-# - Tests for different types of data in the input list.
-# - Tests for different configurations and their effects on the output.
-# - Tests for how `config.options` are used.
+def test_process_data_with_different_data_types() -> None:
+    """Test process_data handles different data types in input."""
+    mixed_data = ["string", 42, {"key": "value"}, [1, 2, 3]]
+    result = process_data(mixed_data)
+    assert result["status"] == "completed"
+    assert result["items_processed"] == len(mixed_data)
+
+
+def test_process_data_with_config_options() -> None:
+    """Test process_data handles config options correctly."""
+    data = ["test_item"]
+    config = Config(
+        name="complex_config",
+        value="test_value",
+        options={"option1": "value1", "option2": 42, "option3": True}
+    )
+    result = process_data(data, config=config, debug=True)
+    assert result["config_name"] == "complex_config"
+    assert result["status"] == "completed"
+
+
+def test_process_data_logger_level_restoration() -> None:
+    """Test that logger level is properly restored after debug mode."""
+    import logging
+    from twat_speech.twat_speech import logger
+    
+    original_level = logger.level
+    data = ["test"]
+    
+    # Call with debug=True
+    process_data(data, debug=True)
+    
+    # Verify logger level is restored
+    assert logger.level == original_level
+
+
+def test_main_function_execution(caplog: pytest.LogCaptureFixture) -> None:
+    """Test main function executes without errors."""
+    with caplog.at_level(logging.INFO):
+        main()
+        
+    # Check that main function logged expected messages
+    assert "Starting twat_speech main demonstration" in caplog.text
+    assert "twat_speech main demonstration finished" in caplog.text
+    assert "Example 1: Processing with config and debug" in caplog.text
+    assert "Example 2: Processing without config" in caplog.text
+    assert "Example 3: Processing empty data" in caplog.text
+
+
+def test_config_with_different_value_types() -> None:
+    """Test Config dataclass with different value types."""
+    # Test with string value
+    config_str = Config(name="str_config", value="test_string")
+    assert config_str.value == "test_string"
+    
+    # Test with int value
+    config_int = Config(name="int_config", value=42)
+    assert config_int.value == 42
+    
+    # Test with float value
+    config_float = Config(name="float_config", value=3.14)
+    assert config_float.value == 3.14
+
+
+def test_process_data_large_dataset() -> None:
+    """Test process_data with larger dataset."""
+    large_data = [f"item_{i}" for i in range(1000)]
+    result = process_data(large_data)
+    assert result["items_received"] == 1000
+    assert result["items_processed"] == 1000
+    assert result["status"] == "completed"
+
+
+def test_process_data_error_handling_with_debug() -> None:
+    """Test error handling preserves debug state."""
+    import logging
+    from twat_speech.twat_speech import logger
+    
+    original_level = logger.level
+    
+    # Test that logger level is restored even when error occurs
+    with pytest.raises(ValueError):
+        process_data([], debug=True)
+    
+    # Logger level should be restored after error
+    assert logger.level == original_level
+
+
+# Benchmark test for performance monitoring
+def test_process_data_performance_benchmark() -> None:
+    """Basic performance test for process_data."""
+    data = [f"item_{i}" for i in range(100)]
+    config = Config(name="perf_test", value="benchmark")
+    
+    import time
+    start_time = time.time()
+    result = process_data(data, config=config)
+    end_time = time.time()
+    
+    # Should complete within reasonable time (adjust threshold as needed)
+    assert end_time - start_time < 1.0  # Should complete in under 1 second
+    assert result["status"] == "completed"

@@ -53,6 +53,8 @@ The library is built with a focus on robustness, configurability, and a clean de
 
 ### Installation
 
+#### Python Package (Recommended)
+
 You can install `twat-speech` from PyPI using `pip` or `uv`:
 
 ```bash
@@ -61,6 +63,25 @@ pip install twat-speech
 
 # Or using uv (recommended for faster performance)
 uv pip install twat-speech
+```
+
+#### Standalone Binaries
+
+For users who prefer not to install Python or manage dependencies, standalone binaries are available for download from the [GitHub Releases](https://github.com/twardoch/twat-speech/releases) page:
+
+- **Linux**: `twat-speech-linux-x64` (or `twat-speech-linux-x64-static` for static linking)
+- **Windows**: `twat-speech-windows-x64.exe`
+- **macOS**: `twat-speech-macos-x64`
+
+Download the appropriate binary for your platform, make it executable, and run:
+
+```bash
+# Linux/macOS
+chmod +x twat-speech-*
+./twat-speech-*
+
+# Windows
+twat-speech-windows-x64.exe
 ```
 
 ### Usage
@@ -109,19 +130,22 @@ except Exception as e:
 ```
 **Note:** The `process_data` function in the current version contains placeholder logic. As the library evolves, this function will be updated to perform actual speech processing tasks. The example above illustrates its intended interface.
 
-#### Command-Line Demonstration
+#### Command-Line Usage
 
-`twat-speech` includes a demonstration script within the library that you can run to see its basic operation and logging output. This is not a full-fledged CLI application but serves to illustrate the library's current capabilities.
-
-To run the demonstration, navigate to the root directory of the project (if you have cloned the repository) or ensure `twat_speech` is in your Python path, then execute:
+`twat-speech` includes a command-line interface for demonstration and testing purposes. After installation, you can run it using:
 
 ```bash
-# If you are in the root of the cloned repository:
-python src/twat_speech/twat_speech.py
-```
-Or, if the package is installed in your environment:
-```bash
+# If installed via pip/uv
+twat-speech
+
+# Or run as a Python module
 python -m twat_speech.twat_speech
+```
+
+If you're running from the source directory:
+```bash
+# From the project root
+python src/twat_speech/twat_speech.py
 ```
 
 This will run the `main()` function in `twat_speech.py`, which executes a few examples of calling `process_data`, including one that intentionally triggers an error, showcasing the logging and error handling.
@@ -270,6 +294,57 @@ All commands should be run from within the activated Hatch environment (`hatch s
     ```bash
     hatch build
     ```
+
+#### Build and Release Scripts
+
+The project includes several convenient scripts for building, testing, and releasing:
+
+*   **Full Build and Test:**
+    ```bash
+    ./scripts/build-and-test.sh
+    ```
+    This runs linting, type checking, tests, and builds the package.
+
+*   **Build Standalone Binaries:**
+    ```bash
+    ./scripts/build-binary.sh
+    ```
+    Creates standalone executables for the current platform using PyInstaller.
+
+*   **Release Management:**
+    ```bash
+    # Show current version and recent tags
+    ./scripts/release.sh --current
+    
+    # Release a specific version
+    ./scripts/release.sh 1.2.3
+    
+    # Auto-increment and release
+    ./scripts/release.sh --patch    # 1.2.3 → 1.2.4
+    ./scripts/release.sh --minor    # 1.2.3 → 1.3.0
+    ./scripts/release.sh --major    # 1.2.3 → 2.0.0
+    ```
+
+#### Script Options
+
+*   **build-and-test.sh options:**
+    - `--skip-tests`: Skip running tests
+    - `--skip-lint`: Skip linting and formatting
+    - `--skip-build`: Skip building the package
+    - `--help`: Show help message
+
+*   **build-binary.sh options:**
+    - `--output-dir DIR`: Output directory for binaries
+    - `--skip-test`: Skip binary testing
+    - `--skip-package`: Skip binary packaging
+    - `--clean`: Clean output directory before building
+    - `--help`: Show help message
+
+*   **release.sh options:**
+    - `--current`: Show current version and recent tags
+    - `--dry-run`: Show what would be done without executing
+    - `--skip-checks`: Skip pre-release checks
+    - `--help`: Show help message
 
 #### Coding Standards
 
