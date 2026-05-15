@@ -23,11 +23,11 @@ packages = ["src/twat_speech"]
 [project]
 name = "twat-speech"
 dynamic = ["version"] # Version is determined dynamically from VCS
-description = ""
+description = "Speech, subtitle, TTS, and dubbing helpers for the twat plugin ecosystem"
 readme = "README.md"
 requires-python = ">=3.10" # Minimum Python version required
 license = "MIT"
-keywords = []
+keywords = ["speech", "subtitles", "tts", "transcription", "twat-plugin"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
@@ -62,6 +62,9 @@ Source = "https://github.com/twardoch/twat-speech"
 # Twat Plugin Registration
 # -----------------------
 # Registers this package as a plugin for the twat ecosystem
+[project.scripts]
+twat-speech = "twat_speech:main"
+
 [project.entry-points."twat.plugins"]
 speech = "twat_speech"
 

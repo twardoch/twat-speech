@@ -1,6 +1,0 @@
-14	./README.md
-8	./pyproject.toml
-5	./src/twat_speech/twat_speech.py
-5	./PLAN.md
-4	./tests/test_twat_speech.py
-2	./TODO.md

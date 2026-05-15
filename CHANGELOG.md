@@ -1,3 +1,7 @@
+---
+this_file: LOG.md
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -5,28 +9,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v0.0.1] - 2025-02-15
 
 ### Added
-- `PLAN.md` for outlining project streamlining tasks.
-- `TODO.md` for tracking progress of streamlining tasks.
-- Added type hints to test functions in `tests/test_twat_speech.py`.
-- Expanded assertions in `tests/test_twat_speech.py` for `process_data` function.
-- Added `llms.txt` to `.gitignore`.
+
+- Initial release of the twat-speech package
+- Basic project structure with modern Python packaging (PEP 621 compliance)
+- Development workflow using Hatch
+- Type hints and runtime type checking setup
+- Test suite configuration
+- CI/CD configuration in .github directory
+- Basic documentation in README.md
 
 ### Changed
-- Updated `.cursor/rules/cleanup.mdc` to recommend `hatch` and `git` workflows instead of `cleanup.py`.
-- Refined a debug log message in `src/twat_speech/twat_speech.py`.
-- Modified `src/twat_speech/__init__.py` to use absolute imports to comply with project linting rules (`TID252`).
-- Ensured all tests, linting (Ruff), and type checks (Mypy) pass using `hatch` commands.
-- Regenerated `llms.txt` with latest changes.
 
-### Removed
-- `cleanup.py` script, as its functionality is better covered by `hatch`, `git`, and other standard tools.
-- `VERSION.txt` (obsolete due to `hatch-vcs`).
-- `REPO_CONTENT.txt` (obsolete, `llms.txt` is the preferred AI-consumable file).
-- `CLEANUP.txt` (log file for the removed `cleanup.py`).
-- (Confirmed `package.toml` was not present to remove).
+- Restructured source code: moved `twat_speech.py` into proper package structure
+- Updated .gitignore with comprehensive Python-specific ignores
+
+### Note
+
+This is the first release of the package, establishing the foundation for future development.
+
+## [Unreleased]
+
+_No unreleased changes yet._
 
 [Unreleased]: https://github.com/twardoch/twat-speech/compare/v0.0.1...HEAD
-<!-- Adjust v0.0.1 if the latest tag is different, or remove comparison if no tags exist yet. If no tags, this can be removed or pointed to the initial commit. -->
+[v0.0.1]: https://github.com/twardoch/twat-speech/releases/tag/v0.0.1 
