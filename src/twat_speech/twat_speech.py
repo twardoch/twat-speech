@@ -40,7 +40,9 @@ def subtitle_transcript(text: str) -> str:
     return "\n".join(cue.text for cue in parse_srt(text) if cue.text)
 
 
-def dub_plan(source_media: str | Path, subtitles: str, *, language: str = "en", audio_dir: str | Path = "dub-audio") -> DubPlan:
+def dub_plan(
+    source_media: str | Path, subtitles: str, *, language: str = "en", audio_dir: str | Path = "dub-audio"
+) -> DubPlan:
     """Create a provider-agnostic dubbing plan from media and SRT text."""
     return create_dub_plan(source_media, subtitles, language=language, audio_dir=audio_dir)
 

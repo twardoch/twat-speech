@@ -29,7 +29,9 @@ class DubPlan:
     segments: list[DubSegment] = field(default_factory=list)
 
 
-def create_dub_plan(source_media: str | Path, subtitles: str, *, language: str = "en", audio_dir: str | Path = "dub-audio") -> DubPlan:
+def create_dub_plan(
+    source_media: str | Path, subtitles: str, *, language: str = "en", audio_dir: str | Path = "dub-audio"
+) -> DubPlan:
     """Create a deterministic dubbing plan from SRT text."""
     media = Path(source_media)
     base = Path(audio_dir)

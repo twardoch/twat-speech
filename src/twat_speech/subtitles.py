@@ -36,12 +36,14 @@ def parse_srt(text: str) -> list[SubtitleCue]:
         lines = block.split("\n")
         if len(lines) < 3 or "-->" not in lines[1]:
             continue
-        start, end = [part.strip() for part in lines[1].split("-->", 1)]
+        start, end = (part.strip() for part in lines[1].split("-->", 1))
         try:
             index = int(lines[0].strip())
         except ValueError:
             index = len(cues) + 1
-        cues.append(SubtitleCue(index, normalize_timestamp(start), normalize_timestamp(end), "\n".join(lines[2:]).strip()))
+        cues.append(
+            SubtitleCue(index, normalize_timestamp(start), normalize_timestamp(end), "\n".join(lines[2:]).strip())
+        )
     return cues
 
 

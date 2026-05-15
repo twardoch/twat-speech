@@ -5,7 +5,15 @@ from pathlib import Path
 from pytest import MonkeyPatch
 from unittest import mock
 
-from twat_speech import dub_plan, normalize_timestamp, parse_srt, repair_subtitles, subtitle_transcript, synthesize, transcribe
+from twat_speech import (
+    dub_plan,
+    normalize_timestamp,
+    parse_srt,
+    repair_subtitles,
+    subtitle_transcript,
+    synthesize,
+    transcribe,
+)
 
 SRT = "1\r\n0:00:01.2 --> 0:00:02,30\r\nHello world\r\n\r\n2\n00:00:03,000 --> 00:00:04,000\nAgain\n"
 
