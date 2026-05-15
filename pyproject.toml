@@ -115,7 +115,6 @@ typing = "mypy --install-types --non-interactive {args:src/twat_speech tests}"
 style = ["ruff check {args:.}", "ruff format {args:.}"]
 fmt = ["ruff format {args:.}", "ruff check --fix {args:.}"]
 all = ["style", "typing"]
-
 # Ruff (linter) configuration
 [tool.ruff]
 target-version = "py310"
@@ -232,12 +231,11 @@ docs = [
     "mkdocs-material>=9.5.0",
     "mkdocstrings[python]>=0.27.0",
 ]
-all = [
-    "twat>=1.8.1", # Main twat package
-
-]
-
+all = ["twat>=1.8.1", "twat-audio[all]>=2.7.7"]
 # Test environment configuration
+audio = [
+    "twat-audio[all]>=2.7.7",
+]
 [tool.hatch.envs.test]
 dependencies = [".[test]"]
 
