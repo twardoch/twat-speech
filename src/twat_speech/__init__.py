@@ -12,7 +12,7 @@ from twat_speech.twat_speech import dub_plan, repair_subtitles, subtitle_transcr
 
 def main() -> None:
     """CLI entry point for twat-speech."""
-    from twat_speech.__main__ import main as cli_main
+    from twat_speech.__main__ import main as cli_main  # noqa: PLC0415
 
     cli_main()
 

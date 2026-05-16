@@ -1,59 +1,122 @@
-"""Command-line interface for twat-speech."""
 # this_file: src/twat_speech/__main__.py
+"""Fire CLI entry point for twat-speech."""
 
 from __future__ import annotations
 
-import argparse
-from pathlib import Path
-
-from twat_speech import dub_plan, repair_subtitles, synthesize, transcribe
+import fire
 
 
-def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="twat-speech", description="Speech, subtitle, TTS, and dubbing helpers.")
-    sub = parser.add_subparsers(dest="command")
+def _version() -> str:
+    """Print the installed twat-speech version."""
+    from twat_speech.__version__ import __version__  # noqa: PLC0415
 
-    trans = sub.add_parser("transcribe", help="Transcribe audio through twat_genai.")
-    trans.add_argument("audio")
-    trans.add_argument("--preprocess", action="store_true")
+    return __version__
 
-    repair = sub.add_parser("repair-srt", help="Repair SRT text.")
-    repair.add_argument("input")
-    repair.add_argument("output", nargs="?")
 
-    synth = sub.add_parser("synthesize", help="Synthesize speech through twat_genai.")
-    synth.add_argument("text")
-    synth.add_argument("output", nargs="?")
+def _transcribe(audio_path: str, *, preprocess: bool = False) -> object:
+    """Transcribe an audio file to text."""
+    from twat_speech.twat_speech import transcribe  # noqa: PLC0415
 
-    dub = sub.add_parser("dub", help="Create a dubbing plan from an SRT file.")
-    dub.add_argument("media")
-    dub.add_argument("srt")
-    dub.add_argument("--language", default="en")
-    dub.add_argument("--audio-dir", default="dub-audio")
-    return parser
+    return transcribe(audio_path, preprocess=preprocess)
+
+
+def _tts(text: str, output_path: str | None = None) -> object:
+    """Synthesize text to speech (TTS)."""
+    from twat_speech.twat_speech import synthesize  # noqa: PLC0415
+
+    return synthesize(text, output_path=output_path)
+
+
+def _repair_srt(input_path: str, output_path: str | None = None) -> object:
+    """Repair and normalize an SRT subtitle file."""
+    from pathlib import Path  # noqa: PLC0415
+
+    from twat_speech.twat_speech import repair_subtitles  # noqa: PLC0415
+
+    text = Path(input_path).read_text()
+    repaired = repair_subtitles(text)
+    if output_path:
+        Path(output_path).write_text(repaired)
+        return output_path
+    return repaired
+
+
+def _dub(
+    media: str,
+    srt: str,
+    language: str = "en",
+    audio_dir: str = "dub-audio",
+) -> object:
+    """Create a dubbing plan from media and SRT file."""
+    from pathlib import Path  # noqa: PLC0415
+
+    from twat_speech.twat_speech import dub_plan  # noqa: PLC0415
+
+    plan = dub_plan(media, Path(srt).read_text(), language=language, audio_dir=audio_dir)
+    return [
+        {
+            "index": seg.index,
+            "start": seg.start,
+            "end": seg.end,
+            "audio_path": seg.audio_path,
+            "text": seg.text,
+        }
+        for seg in plan.segments
+    ]
+
+
+def _subtitle_transcript(input_path: str) -> object:
+    """Extract plain transcript text from an SRT file."""
+    from pathlib import Path  # noqa: PLC0415
+
+    from twat_speech.twat_speech import subtitle_transcript  # noqa: PLC0415
+
+    return subtitle_transcript(Path(input_path).read_text())
+
+
+COMMANDS: dict[str, object] = {
+    "version": _version,
+    "transcribe": _transcribe,
+    "tts": _tts,
+    "repair-srt": _repair_srt,
+    "dub": _dub,
+    "subtitle-transcript": _subtitle_transcript,
+}
 
 
 def main() -> None:
-    """Run the twat-speech CLI."""
-    parser = _parser()
-    args = parser.parse_args()
-    if args.command is None:
-        parser.print_help()
-        return
-    if args.command == "transcribe":
-        print(transcribe(args.audio, preprocess=args.preprocess))
-    elif args.command == "repair-srt":
-        repaired = repair_subtitles(Path(args.input).read_text())
-        if args.output:
-            Path(args.output).write_text(repaired)
-        else:
-            print(repaired, end="")
-    elif args.command == "synthesize":
-        print(synthesize(args.text, output_path=args.output))
-    elif args.command == "dub":
-        plan = dub_plan(args.media, Path(args.srt).read_text(), language=args.language, audio_dir=args.audio_dir)
-        for segment in plan.segments:
-            print(f"{segment.index}	{segment.start}	{segment.end}	{segment.audio_path}	{segment.text}")
+    """Fire CLI dispatcher for twat-speech."""
+    fire.Fire(COMMANDS, name="twat-speech")
+
+
+def cmd_version() -> None:
+    """Print the installed twat-speech version."""
+    fire.Fire(_version, name="twat-speech-version")
+
+
+def cmd_transcribe() -> None:
+    """Transcribe an audio file to text."""
+    fire.Fire(_transcribe, name="twat-speech-transcribe")
+
+
+def cmd_tts() -> None:
+    """Synthesize text to speech (TTS)."""
+    fire.Fire(_tts, name="twat-speech-tts")
+
+
+def cmd_repair_srt() -> None:
+    """Repair and normalize an SRT subtitle file."""
+    fire.Fire(_repair_srt, name="twat-speech-repair-srt")
+
+
+def cmd_dub() -> None:
+    """Create a dubbing plan from media and SRT file."""
+    fire.Fire(_dub, name="twat-speech-dub")
+
+
+def cmd_subtitle_transcript() -> None:
+    """Extract plain transcript text from an SRT file."""
+    fire.Fire(_subtitle_transcript, name="twat-speech-subtitle-transcript")
 
 
 if __name__ == "__main__":

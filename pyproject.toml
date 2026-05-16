@@ -42,7 +42,7 @@ classifiers = [
 # External packages required for the project to function
 dependencies = [
     "twat>=1.8.1", # Main twat package
-
+    "fire>=0.6.0",
 ]
 
 # Project Authors
@@ -63,7 +63,13 @@ Source = "https://github.com/twardoch/twat-speech"
 # -----------------------
 # Registers this package as a plugin for the twat ecosystem
 [project.scripts]
-twat-speech = "twat_speech:main"
+twat-speech                    = "twat_speech.__main__:main"
+twat-speech-version            = "twat_speech.__main__:cmd_version"
+twat-speech-transcribe         = "twat_speech.__main__:cmd_transcribe"
+twat-speech-tts                = "twat_speech.__main__:cmd_tts"
+twat-speech-repair-srt         = "twat_speech.__main__:cmd_repair_srt"
+twat-speech-dub                = "twat_speech.__main__:cmd_dub"
+twat-speech-subtitle-transcript = "twat_speech.__main__:cmd_subtitle_transcript"
 
 [project.entry-points."twat.plugins"]
 speech = "twat_speech"
